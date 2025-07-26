@@ -78,6 +78,10 @@ export default defineComponent({
         ...attrs,
       }
     },
+
+    allowedExtensions() {
+      return this.currentField?.allowedExtensions || []
+    },
   },
 
   methods: {
@@ -111,6 +115,7 @@ export default defineComponent({
         singleDisk: this.currentField.singleDisk ?? false,
         permissions: this.currentField.permissions,
         flexibleGroup: this.flexibleGroup,
+        allowedExtensions: this.allowedExtensions,
         callback: selection => {
           this.value = selection
         },
