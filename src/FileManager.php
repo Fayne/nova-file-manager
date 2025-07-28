@@ -89,13 +89,13 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
     }
 
     /**
-     * @param array|string $extensions
+     * @param array|string|null $extensions
      * @return $this
      */
-    public function allowedExtensions(array|string $extensions): static
+    public function allowedExtensions(array|string|null $extensions): static
     {
         try {
-            $this->allowedExtensions = is_array($extensions) ? $extensions : explode(',', $extensions);
+            $this->allowedExtensions = array_filter(is_array($extensions) ? $extensions : explode(',', $extensions ?? ''));
         } finally {
             return $this;
         }
