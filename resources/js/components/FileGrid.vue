@@ -19,6 +19,7 @@ const store = useBrowserStore()
 const isSelected = computed(() => store.isSelected)
 const preview = computed(() => store.preview)
 const allowedExtensions = computed(() => store.allowedExtensions)
+const showAdditionalInfo = computed(() => store.showAdditionalInfo)
 
 // HELPERS
 const isFileAllowed = (file: Entity): boolean => {
@@ -59,6 +60,7 @@ const toggleSelection = (file: Entity) => {
         !isFileAllowed(file) ? 'opacity-30 cursor-not-allowed pointer-events-none' : ''
       ]"
       :title="!isFileAllowed(file) ? `Allowed extensions: ${allowedExtensions?.join(', ')}` : ''"
+      :show-additional-info="showAdditionalInfo"
       @click="toggleSelection(file)"
       @dblclick="openPreview(file)"
     />
