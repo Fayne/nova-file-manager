@@ -195,4 +195,17 @@ return [
 
     'upload_replace_existing' => (bool) env('NOVA_FILE_MANAGER_UPLOAD_REPLACE_EXISTING', false),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Transform data to url
+    |--------------------------------------------------------------------------
+    |
+    | If the requested route is one of the following,
+    | then nova file manager will convert the data into a URL and return it to the frontend
+    |
+    */
+
+    'array_to_url_routes' => [
+        // 'api/v1/*',
+    ],
 ];

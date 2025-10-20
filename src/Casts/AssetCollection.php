@@ -8,6 +8,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Oneduo\NovaFileManager\Support\Asset;
+use Oneduo\NovaFileManager\Casts\Asset as AssetCast;
 
 class AssetCollection implements CastsAttributes
 {
@@ -22,6 +23,12 @@ class AssetCollection implements CastsAttributes
     {
         if ($value === null) {
             return collect();
+        }
+
+        if (AssetCast::shouldTransformToUrl()) {
+            return collect(json_decode($value, true, 512, JSON_THROW_ON_ERROR))
+                ->filter()
+                ->map(fn (array $file) => AssetCast::transformArrayToUrl($file));
         }
 
         return collect(json_decode($value, true, 512, JSON_THROW_ON_ERROR))
