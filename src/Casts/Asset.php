@@ -23,11 +23,17 @@ class Asset implements CastsAttributes
             return null;
         }
 
-        if (static::shouldTransformToUrl()) {
-            return static::transformArrayToUrl(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
+        if (is_string($value)) {
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        } elseif (is_a($value, \stdClass::class)) {
+            $value = (array) $value;
         }
 
-        return new AssetObject(...json_decode($value, true, 512, JSON_THROW_ON_ERROR));
+        if (static::shouldTransformToUrl()) {
+            return static::transformArrayToUrl($value);
+        }
+
+        return new AssetObject(...$value);
     }
 
     /**
@@ -54,7 +60,17 @@ class Asset implements CastsAttributes
      */
     public static function shouldTransformToUrl(): bool
     {
-        return config('nova-file-manager.array_to_url_routes') && request()->is(config('nova-file-manager.array_to_url_routes'));
+        if (! $routes = config('nova-file-manager.array_to_url_routes')) {
+            return false;
+        }
+
+        foreach ($routes as $route) {
+            if (request()->routeIs($route) || request()->is($route)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

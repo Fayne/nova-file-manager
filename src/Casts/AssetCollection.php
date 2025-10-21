@@ -26,9 +26,17 @@ class AssetCollection implements CastsAttributes
         }
 
         if (AssetCast::shouldTransformToUrl()) {
-            return collect(json_decode($value, true, 512, JSON_THROW_ON_ERROR))
+            return collect(is_array($value) ? $value : json_decode($value, true, 512, JSON_THROW_ON_ERROR))
                 ->filter()
-                ->map(fn (array $file) => AssetCast::transformArrayToUrl($file));
+                ->map(function ($file) {
+                    if (is_array($file)) {
+                        return AssetCast::transformArrayToUrl($file);
+                    } elseif (is_a($file, \stdClass::class)) {
+                        return AssetCast::transformArrayToUrl(['disk' => $file->disk, 'path' => $file->path]);
+                    } else {
+                        throw new \Exception('Invalid value for asset cast.');
+                    }
+                });
         }
 
         return collect(json_decode($value, true, 512, JSON_THROW_ON_ERROR))
