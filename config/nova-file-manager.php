@@ -208,4 +208,6 @@ return [
     'array_to_url_routes' => [
         // 'api/v1/*',
     ],
+    'transform_to_url_class' => \Oneduo\NovaFileManager\Utils\TransformDataToUrl::class,
+
 ];

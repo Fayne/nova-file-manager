@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Oneduo\NovaFileManager\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 use Oneduo\NovaFileManager\Support\Asset as AssetObject;
 
@@ -79,8 +78,10 @@ class Asset implements CastsAttributes
      */
     public static function transformArrayToUrl(array $data): string
     {
+        $class = config('nova-file-manager.transform_to_url_class');
+
         try {
-            return Storage::disk($data['disk'])->url($data['path']);
+            return (string) new $class($data);
         } catch (\Exception $e) {
             return '';
         }
