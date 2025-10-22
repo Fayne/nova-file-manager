@@ -59,6 +59,10 @@ class Asset implements CastsAttributes
      */
     public static function shouldTransformToUrl(): bool
     {
+        if ($confirmClass = config('nova-file-manager.custom_confirm_transform_class')) {
+            return (bool)(new $confirmClass)();
+        }
+
         if (! $routes = config('nova-file-manager.array_to_url_routes')) {
             return false;
         }

@@ -209,5 +209,5 @@ return [
         // 'api/v1/*',
     ],
     'transform_to_url_class' => \Oneduo\NovaFileManager\Utils\TransformDataToUrl::class,
-
+    'custom_confirm_transform_class' => null, // This class must have __invoke() method and return bool value
 ];
