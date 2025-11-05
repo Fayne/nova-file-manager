@@ -10,10 +10,12 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
 use Laravel\Nova\Tool;
+use MobileNowGroup\PageBuilder\FlexibleComponent;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use Oneduo\NovaFileManager\FileManager;
 use Oneduo\NovaFileManager\NovaFileManager;
+use Whitecube\NovaFlexibleContent\Flexible;
 
 /**
  * @property-read ?string $disk
@@ -97,7 +99,7 @@ class BaseRequest extends NovaRequest
     {
         /** @var \Whitecube\NovaFlexibleContent\Flexible $field */
         $field = $fields
-            ->whereInstanceOf('Whitecube\NovaFlexibleContent\Flexible')
+            ->whereInstanceOf([Flexible::class, FlexibleComponent::class])
             ->findFieldByAttribute($attribute, function () {
                 abort(404);
             });
